@@ -518,7 +518,11 @@
 #if EIGEN_COMP_MSVC || EIGEN_COMP_ICC
 #define EIGEN_STRONG_INLINE __forceinline
 #else
+#if EIGEN_COMP_CLANG
+#define EIGEN_STRONG_INLINE inline __attribute__((always_inline))
+#else
 #define EIGEN_STRONG_INLINE inline
+#endif
 #endif
 #endif
 
