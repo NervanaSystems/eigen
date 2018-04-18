@@ -183,7 +183,7 @@ namespace Eigen
     };
   }
   // If EIGEN_DEBUG_ASSERTS is defined and if no assertion is triggered while
-  // one should have been, then the list of excecuted assertions is printed out.
+  // one should have been, then the list of executed assertions is printed out.
   //
   // EIGEN_DEBUG_ASSERTS is not enabled by default as it
   // significantly increases the compilation time
@@ -265,7 +265,7 @@ namespace Eigen
       {                                       \
         Eigen::no_more_assert = true;         \
         if(report_on_cerr_on_assert_failure)  \
-          eigen_plain_assert(a && #MSG);      \
+          eigen_plain_assert((a) && #MSG);      \
         else                                  \
           EIGEN_THROW_X(Eigen::eigen_static_assert_exception()); \
       }
