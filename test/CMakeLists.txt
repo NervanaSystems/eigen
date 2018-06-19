@@ -30,6 +30,15 @@ if(NOT EIGEN_Fortran_COMPILER_WORKS)
   find_package(LAPACK QUIET)
 endif()
 
+# TODO do the same for EXTERNAL_LAPACK
+option(EIGEN_TEST_EXTERNAL_BLAS "Use external BLAS library for testsuite" OFF)
+if(EIGEN_TEST_EXTERNAL_BLAS)
+  find_package(BLAS REQUIRED)
+  message(STATUS "BLAS_COMPILER_FLAGS: ${BLAS_COMPILER_FLAGS}")
+  add_definitions("-DEIGEN_USE_BLAS") # is adding  ${BLAS_COMPILER_FLAGS} necessary?
+  list(APPEND EXTERNAL_LIBS "${BLAS_LIBRARIES}")
+endif(EIGEN_TEST_EXTERNAL_BLAS)
+
 # configure blas/lapack (use Eigen's ones)
 set(EIGEN_BLAS_LIBRARIES eigen_blas)
 set(EIGEN_LAPACK_LIBRARIES eigen_lapack)
@@ -91,7 +100,7 @@ else()
 endif()
 
 
-find_package(PASTIX QUIET COMPONENTS METIS SCOTCH)
+find_package(PASTIX QUIET COMPONENTS METIS SEQ)
 # check that the PASTIX found is a version without MPI
 find_path(PASTIX_pastix_nompi.h_INCLUDE_DIRS
   NAMES pastix_nompi.h
@@ -283,6 +292,7 @@ ei_add_test(mpl2only)
 ei_add_test(inplace_decomposition)
 ei_add_test(half_float)
 ei_add_test(array_of_string)
+ei_add_test(num_dimensions)
 
 add_executable(bug1213 bug1213.cpp bug1213_main.cpp)
 

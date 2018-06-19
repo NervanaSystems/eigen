@@ -20,7 +20,7 @@ namespace Eigen {
   * \brief The tensor base class.
   *
   * This class is the common parent of the Tensor and TensorMap class, thus
-  * making it possible to use either class interchangably in expressions.
+  * making it possible to use either class interchangeably in expressions.
   */
 
 template<typename Derived>
@@ -133,11 +133,37 @@ class TensorBase<Derived, ReadOnlyAccessors>
       return unaryExpr(internal::scalar_digamma_op<Scalar>());
     }
 
+    EIGEN_DEVICE_FUNC
+    EIGEN_STRONG_INLINE const TensorCwiseUnaryOp<internal::scalar_i0e_op<Scalar>, const Derived>
+    i0e() const {
+      return unaryExpr(internal::scalar_i0e_op<Scalar>());
+    }
+
+    EIGEN_DEVICE_FUNC
+    EIGEN_STRONG_INLINE const TensorCwiseUnaryOp<internal::scalar_i1e_op<Scalar>, const Derived>
+    i1e() const {
+      return unaryExpr(internal::scalar_i1e_op<Scalar>());
+    }
+
     // igamma(a = this, x = other)
     template<typename OtherDerived> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
     const TensorCwiseBinaryOp<internal::scalar_igamma_op<Scalar>, const Derived, const OtherDerived>
     igamma(const OtherDerived& other) const {
       return binaryExpr(other.derived(), internal::scalar_igamma_op<Scalar>());
+    }
+
+    // igamma_der_a(a = this, x = other)
+    template<typename OtherDerived> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+    const TensorCwiseBinaryOp<internal::scalar_igamma_der_a_op<Scalar>, const Derived, const OtherDerived>
+    igamma_der_a(const OtherDerived& other) const {
+      return binaryExpr(other.derived(), internal::scalar_igamma_der_a_op<Scalar>());
+    }
+
+    // gamma_sample_der_alpha(alpha = this, sample = other)
+    template<typename OtherDerived> EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE
+    const TensorCwiseBinaryOp<internal::scalar_gamma_sample_der_alpha_op<Scalar>, const Derived, const OtherDerived>
+    gamma_sample_der_alpha(const OtherDerived& other) const {
+      return binaryExpr(other.derived(), internal::scalar_gamma_sample_der_alpha_op<Scalar>());
     }
 
     // igammac(a = this, x = other)
@@ -207,6 +233,12 @@ class TensorBase<Derived, ReadOnlyAccessors>
     EIGEN_STRONG_INLINE const TensorCwiseUnaryOp<internal::scalar_abs_op<Scalar>, const Derived>
     abs() const {
       return unaryExpr(internal::scalar_abs_op<Scalar>());
+    }
+
+    EIGEN_DEVICE_FUNC
+    EIGEN_STRONG_INLINE const TensorCwiseUnaryOp<internal::scalar_clamp_op<Scalar>, const Derived>
+    clip(Scalar min, Scalar max) const {
+      return unaryExpr(internal::scalar_clamp_op<Scalar>(min, max));
     }
 
     EIGEN_DEVICE_FUNC

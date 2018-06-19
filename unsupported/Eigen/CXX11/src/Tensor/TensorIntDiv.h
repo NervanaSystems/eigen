@@ -21,7 +21,7 @@ namespace Eigen {
   * \brief Fast integer division by a constant.
   *
   * See the paper from Granlund and Montgomery for explanation.
-  *   (at http://dx.doi.org/10.1145/773473.178249)
+  *   (at https://doi.org/10.1145/773473.178249)
   *
   * \sa Tensor
   */
@@ -167,7 +167,7 @@ struct TensorIntDivisor {
     shift2 = log_div > 1 ? log_div-1 : 0;
   }
 
-  // Must have 0 <= numerator. On platforms that dont support the __uint128_t
+  // Must have 0 <= numerator. On platforms that don't support the __uint128_t
   // type numerator should also be less than 2^32-1.
   EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE T divide(const T numerator) const {
     eigen_assert(static_cast<typename UnsignedTraits<T>::type>(numerator) < NumTraits<UnsignedType>::highest()/2);
