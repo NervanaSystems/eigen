@@ -164,9 +164,9 @@ class TensorCostModel {
   static const int kDeviceCyclesPerComputeCycle = 1;
 
  // Costs in device cycles.
-  static const int kStartupCycles = 100000;
-  static const int kPerThreadCycles = 100000;
-  static const int kTaskSize = 40000;
+  static const int kStartupCycles = 5000;
+  static const int kPerThreadCycles = 5000;
+  static const int kTaskSize = 5000;
 
   // Returns the number of threads in [1:max_threads] to use for
   // evaluating an expression with the given output size and cost per

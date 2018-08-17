@@ -234,6 +234,7 @@ struct ThreadPoolDevice {
       }
     }
 
+#if !defined(EIGEN_OPENMP)
     // Recursively divide size into halves until we reach block_size.
     // Division code rounds mid to block_size, so we are guaranteed to get
     // block_count leaves that do actual computations.
@@ -253,6 +254,17 @@ struct ThreadPoolDevice {
     };
     handleRange(0, n);
     barrier.Wait();
+#else
+    auto blocks = static_cast<unsigned int>(divup(n, block_size));
+    #pragma omp parallel for
+    for (unsigned int i = 0; i < blocks; i++) {
+        auto first = (block_size * i);
+        auto last  = first + block_size;
+        if (n <= last)
+            last = n;
+        f(first, last);
+    }
+#endif
   }
 
   // Convenience wrapper for parallelFor that does not align blocks.
